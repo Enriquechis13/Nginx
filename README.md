@@ -11,21 +11,24 @@ Este documento describe los pasos para instalar y verificar el servidor web **Ng
 
 ### Pasos para la instalación
 
-   **Actualizar los repositorios**  
+**Actualizar los repositorios**  
    Ejecuta el siguiente comando para actualizar los repositorios locales:
+
    ```bash
    sudo apt update
    ```
 
-   **Instalar Nginx**
+**Instalar Nginx**
     Instala el paquete de Nginx utilizando el siguiente comando:
-    ```bash
+
+   ```bash
    sudo apt install nginx
    ```
 
-    **Verificar la instalación**
+**Verificar la instalación**
     Comprueba que el servicio de Nginx se haya instalado correctamente y que esté en funcionamiento:
-    ```bash
+
+   ```bash
    systemctl status nginx
    ```
 
