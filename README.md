@@ -64,7 +64,8 @@ Este documento describe los pasos necesarios para configurar un directorio para 
 
     ```bash
    sudo chown -R www-data:www-data /var/www/servidor_nginx/html
-   ```
+       ```bash
+       ```
 
 **Establecer permisos adecuados**
    Asigna permisos para evitar errores de acceso no autorizado:
