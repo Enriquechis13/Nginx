@@ -14,23 +14,23 @@ Este documento describe los pasos para instalar y verificar el servidor web **Ng
 **Actualizar los repositorios**  
    Ejecuta el siguiente comando para actualizar los repositorios locales:
 
-   ```bash
+```bash
    sudo apt update
-   ```
+```
 
 **Instalar Nginx**
     Instala el paquete de Nginx utilizando el siguiente comando:
 
-   ```bash
+```bash
    sudo apt install nginx
-   ```
+```
 
 **Verificar la instalación**
     Comprueba que el servicio de Nginx se haya instalado correctamente y que esté en funcionamiento:
 
-   ```bash
+```bash
    systemctl status nginx
-   ```
+```
 
    ![Imagen nginx](img/Captura.PNG)
 
@@ -49,35 +49,35 @@ Este documento describe los pasos necesarios para configurar un directorio para 
 **Crear la carpeta del sitio web**  
    Crea la estructura de directorios para tu sitio web :
 
-   ```bash
+```bash
    sudo mkdir -p /var/www/servidor_nginx/html
-   ```
+```
+
 **Clonar el repositorio del sitio web**
    Clona el siguiente repositorio en la carpeta creada:
 
-    ```bash
+```bash
    git clone https://github.com/cloudacademy/static-website-example /var/www/servidor_nginx/html
-   ```
+```
 
 **Configurar el propietario de la carpeta**
    Cambia el propietario de la carpeta y de su contenido al usuario www-data:
 
-    ```bash
+```bash
    sudo chown -R www-data:www-data /var/www/servidor_nginx/html
-       ```bash
-       ```
+```
 
 **Establecer permisos adecuados**
    Asigna permisos para evitar errores de acceso no autorizado:
 
-    ```bash
+```bash
    sudo chmod -R 755 /var/www/servidor_nginx
-   ```
+```
 
 **Comprobar el sitio web**
    Abre un navegador y accede a:
 
-    ```bash
+```bash
    http://192.168.57.102
-   ```
+```
 
