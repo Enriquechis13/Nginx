@@ -242,3 +242,67 @@ Puedes conectarte a través de FTP estándar, pero **no es recomendable** debido
 2. **FTP explícito sobre SSL (FTPES)**:  
    Esta es la opción recomendada. En este caso, la conexión comienza en el puerto 21, pero luego se solicita explícitamente que la conexión se establezca de forma segura mediante SSL/TLS.
 
+## Instrucciones para Transferir Archivos del Sitio Web mediante FTPES
+
+### Requisitos previos
+
+**Servidor FTPS configurado**: Asegúrate de haber configurado correctamente el servidor FTPS en tu máquina virtual Debian, siguiendo los pasos que se detallan en la sección anterior.
+
+**Acceso a un cliente FTP**: En este caso, utilizaremos FileZilla, que es un cliente FTP que soporta conexiones FTPS.
+Directorio de destino en el servidor: Asegúrate de tener creado el directorio /var/www/mi_nuevo_sitio/html en tu servidor, donde subirás los archivos del sitio web.
+
+1. **Configurar FileZilla para usar FTPES**
+
+#### 1.1. Descargar e instalar FileZilla
+Si no tienes FileZilla instalado, puedes descargarlo desde su página oficial https://filezilla-project.org/. Es compatible con Windows, Linux y macOS.
+
+#### 1.2. Abrir FileZilla
+Una vez instalado, abre FileZilla en tu máquina local.
+
+#### 1.3. Configurar una nueva conexión FTPES
+
+En FileZilla, ve al menú Archivo y selecciona Gestor de sitios.
+En la ventana del gestor de sitios, haz clic en Nuevo sitio y asigna un nombre descriptivo para la conexión (por ejemplo, "Servidor FTPS").
+
+**Completa los siguientes campos**:
+
+**Host**: La dirección IP de tu servidor Debian (por ejemplo, 192.168.57.102).
+**Puerto**: 21 (puerto predeterminado para FTPES).
+**Protocolo**: Selecciona FTP - Protocolo de transferencia de archivos.
+**Cifrado**: Selecciona Requiere FTP sobre TLS explícito (FTPES).
+**Modo de acceso**: Elige Normal.
+**Usuario**: El nombre de usuario de tu cuenta FTP en el servidor Debian.
+**Contraseña**: La contraseña asociada a la cuenta FTP en tu servidor.
+
+#### 1.4. Conectar al servidor
+Haz clic en Conectar para iniciar la conexión con el servidor FTPS.
+
+2. **Subir los Archivos al Directorio /var/www/nginx_sitio/html**
+
+#### 2.1. Navegar a la carpeta local
+En el panel izquierdo de FileZilla (la vista local), navega a la carpeta donde tienes los archivos de tu sitio web que deseas transferir.
+
+#### 2.2. Navegar al directorio de destino en el servidor
+En el panel derecho de FileZilla (la vista remota), navega hasta el directorio /var/www/mi_nuevo_sitio/html en tu servidor Debian.
+
+#### 2.3. Subir los archivos
+Selecciona todos los archivos y carpetas de tu sitio web en el panel izquierdo (local).
+Arrástralos y suéltalos en el panel derecho (remoto), en el directorio /var/www/nginx_sitio/html.
+FileZilla comenzará a transferir los archivos al servidor. Asegúrate de que todos los archivos se transfieran correctamente sin errores.
+
+3. **Verificación de la Transferencia**
+
+#### 3.1. Verificar en FileZilla
+FileZilla mostrará el progreso de la transferencia de archivos en la parte inferior. Una vez completada la transferencia, asegúrate de que todos los archivos y carpetas estén presentes en el directorio /var/www/nginx_sitio/html.
+
+#### 3.2. Verificar en el servidor
+Puedes verificar que los archivos han sido subidos correctamente al servidor accediendo a tu máquina virtual Debian y ejecutando el siguiente comando para listar los archivos en el directorio:
+
+```bash
+   ls /var/www/mi_nuevo_sitio/html
+```
+
+4. **Conclusión**
+Con estos pasos, has transferido exitosamente los archivos de tu sitio web a tu servidor Debian usando FTPES (FTP seguro) a través de FileZilla. Ahora tu sitio web está listo para ser accesible a través de Nginx u otro servidor web que hayas configurado en tu servidor.
+
+Si encuentras algún problema durante la transferencia, asegúrate de revisar los registros de FileZilla y verificar la configuración del servidor FTPS en Debian.  
