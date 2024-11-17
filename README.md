@@ -242,7 +242,7 @@ Puedes conectarte a través de FTP estándar, pero **no es recomendable** debido
 2. **FTP explícito sobre SSL (FTPES)**:  
    Esta es la opción recomendada. En este caso, la conexión comienza en el puerto 21, pero luego se solicita explícitamente que la conexión se establezca de forma segura mediante SSL/TLS.
 
-## Instrucciones para Transferir Archivos del Sitio Web mediante FTPES
+## 5. Instrucciones para Transferir Archivos del Sitio Web mediante FTPES
 
 ### Requisitos previos
 
@@ -306,3 +306,31 @@ Puedes verificar que los archivos han sido subidos correctamente al servidor acc
 Con estos pasos, has transferido exitosamente los archivos de tu sitio web a tu servidor Debian usando FTPES (FTP seguro) a través de FileZilla. Ahora tu sitio web está listo para ser accesible a través de Nginx u otro servidor web que hayas configurado en tu servidor.
 
 Si encuentras algún problema durante la transferencia, asegúrate de revisar los registros de FileZilla y verificar la configuración del servidor FTPS en Debian.  
+
+## 6. Cuestiones finales
+
+### ¿Qué pasa si no hago el link simbólico entre `sites-available` y `sites-enabled` de mi sitio web?
+
+Si no creas el link simbólico entre el archivo de configuración en **`/etc/nginx/sites-available/`** y **`/etc/nginx/sites-enabled/`**, Nginx no reconocerá el sitio web que has configurado, lo que significa que:
+
+- **El sitio no estará habilitado**: Nginx no sabrá que el nuevo dominio o sitio web debe estar activo, por lo que no podrá servir las páginas de tu sitio web.
+- **No habrá acceso a tu sitio web**: Cuando intentes acceder a tu sitio web desde un navegador, recibirás una página de error o la página predeterminada de Nginx, si está configurada, en lugar de tu sitio web.
+  
+En resumen, **el sitio web no será accesible** a menos que crees el link simbólico y reinicies Nginx.
+
+### ¿Qué pasa si no le doy los permisos adecuados a `/var/www/nginx_sitio`?
+
+Si no otorgas los permisos adecuados a la carpeta **`/var/www/nginx_sitio`**, pueden ocurrir los siguientes problemas:
+
+- **Nginx no podrá acceder a los archivos**: Nginx necesita poder leer los archivos dentro del directorio de tu sitio web (por ejemplo, `index.html`, imágenes, etc.). Si los permisos son incorrectos, Nginx no podrá servir las páginas y mostrará un error.
+
+- **Problemas de seguridad**: Si los permisos son demasiado permisivos (por ejemplo, si cualquier usuario tiene acceso de escritura), esto puede ser un riesgo de seguridad, ya que alguien podría modificar o eliminar archivos críticos de tu sitio.
+
+- **Error 403 (Forbidden)**: Si los permisos de acceso son demasiado restrictivos (por ejemplo, si no se da permiso de lectura al grupo o a Nginx), podrías recibir un error 403 al intentar acceder a tu sitio web.
+
+- **Imposibilidad de cargar archivos o subir contenido**: Si estás usando un sistema para subir archivos al servidor (por ejemplo, con FTP), es probable que no puedas cargar o modificar los archivos sin los permisos adecuados.
+
+### Recomendaciones:
+
+- **Permisos adecuados**: Asegúrate de que **el usuario y grupo de Nginx** (generalmente `www-data`) tenga permisos de lectura y, en su caso, de escritura en el directorio de tu sitio web.
+- **Seguridad**: No utilices permisos demasiado amplios (como `777`) para evitar riesgos de seguridad. Usa permisos como `755` para directorios y `644` para archivos.
