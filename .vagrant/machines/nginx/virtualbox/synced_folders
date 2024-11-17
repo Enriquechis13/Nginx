@@ -1,1 +1,1 @@
-{"virtualbox":{"/etc/vagrant":{"type":"virtualbox","guestpath":"/etc/vagrant","hostpath":"C:/Users/ChispoXdd/Documents/GitHub/Nginx/a","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/ChispoXdd/Documents/GitHub/Nginx","disabled":false,"__vagrantfile":true}}}
+{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/ChispoXdd/Documents/GitHub/Nginx","disabled":false,"__vagrantfile":true}}}
