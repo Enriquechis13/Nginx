@@ -86,6 +86,7 @@ Este documento describe los pasos necesarios para configurar un directorio para 
 En Nginx existen dos directorios clave para la configuración de sitios web:
 
 - **`/etc/nginx/sites-available/`**: Contiene los archivos de configuración de los sitios virtuales disponibles, es decir, todos los sitios web que podrían ser servidos por Nginx.
+
 - **`/etc/nginx/sites-enabled/`**: Contiene los archivos de configuración de los sitios habilitados. Solo los sitios que están en este directorio se sirven efectivamente por Nginx.
 
 El archivo de configuración por defecto (`default`) se encuentra en **`/etc/nginx/sites-available/`** y es el que se muestra cuando no se encuentra un sitio web o cuando se accede al servidor sin especificar un dominio.
@@ -211,7 +212,7 @@ Reemplaza las líneas eliminadas con las siguientes configuraciones, ajustando l
    ssl_sslv3=NO
    require_ssl_reuse=NO
    ssl_ciphers=HIGH
-   
+
    local_root=/home/vagrant/ftp
 ```
 
