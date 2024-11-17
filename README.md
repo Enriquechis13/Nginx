@@ -299,7 +299,7 @@ FileZilla mostrará el progreso de la transferencia de archivos en la parte infe
 Puedes verificar que los archivos han sido subidos correctamente al servidor accediendo a tu máquina virtual Debian y ejecutando el siguiente comando para listar los archivos en el directorio:
 
 ```bash
-   ls /var/www/mi_nuevo_sitio/html
+   ls /var/www/nginx_sitio
 ```
 
 4. **Conclusión**
