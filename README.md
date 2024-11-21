@@ -334,3 +334,90 @@ Si no otorgas los permisos adecuados a la carpeta **`/var/www/nginx_sitio`**, pu
 
 - **Permisos adecuados**: Asegúrate de que **el usuario y grupo de Nginx** (generalmente `www-data`) tenga permisos de lectura y, en su caso, de escritura en el directorio de tu sitio web.
 - **Seguridad**: No utilices permisos demasiado amplios (como `777`) para evitar riesgos de seguridad. Usa permisos como `755` para directorios y `644` para archivos.
+
+# Autenticación en Nginx
+
+## 1. Configuración Inicial: Autenticación Básica con OpenSSL
+
+### 1.1 Instalación de OpenSSL
+
+Primero, asegúrate de que OpenSSL esté instalado en tu servidor. Para comprobar si está instalado, ejecuta el siguiente comando:
+
+```bash
+   dpkg -l | grep openssl
+```
+
+Si OpenSSL no está instalado, puedes instalarlo con los siguientes comandos:
+
+```bash
+   sudo apt update
+   sudo apt install openssl
+```
+
+### 1.2 Creación de Usuarios y Contraseñas
+A continuación, crearás el archivo .htpasswd que contendrá los usuarios y sus contraseñas cifradas.
+
+**Crear el archivo .htpasswd:**
+
+Para crear el archivo .htpasswd y agregar un usuario.
+
+```bash
+   sudo sh -c "echo -n 'enrique' >> /etc/nginx/.htpasswd"
+```
+
+**Cifrar la contraseña:**
+
+Luego, utiliza OpenSSL para cifrar la contraseña. Se te pedirá que introduzcas una contraseña:
+
+```bash
+   sudo sh -c "openssl passwd -apr1 >> /etc/nginx/.htpasswd"
+```
+
+Para agregar más usuarios, repite el proceso con un nuevo nombre de usuario y contraseña.
+
+**Verificar el contenido cifrado del archivo:**
+
+Para asegurarte de que los usuarios y contraseñas se han agregado correctamente, puedes visualizar el contenido cifrado del archivo .htpasswd ejecutando:
+
+```bash
+   cat /etc/nginx/.htpasswd
+```
+
+## 2. Configuración del Servidor Nginx
+
+### 2.1 Proteger el Acceso al Sitio Completo
+
+**Editar la configuración de Nginx:**
+
+Edita el archivo de configuración del sitio web en `/etc/nginx/sites-available/nginx_web`:
+
+```bash
+   sudo nano /etc/nginx/sites-available/nginx_web
+```
+
+Agregar la autenticación básica:
+
+Dentro del bloque del servidor `(server { ... })`, agrega la configuración para proteger el acceso al sitio web con autenticación básica:
+
+```bash
+   server {
+      listen 80;
+      root /var/www/deaw/html/simple-static-website;
+      index index.html index.htm index.nginx-debian.html;
+      server_name nombre_web;
+
+      location / {
+         auth_basic "Área restringida";
+         auth_basic_user_file /etc/nginx/.htpasswd;
+         try_files $uri $uri/ =404;
+      }
+   }
+```
+
+Guarda los cambios y cierra el archivo.
+
+Despues reinicia nginx:
+
+```bash
+   sudo systemctl restart nginx
+```
