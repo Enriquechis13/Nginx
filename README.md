@@ -307,9 +307,10 @@ Con estos pasos, has transferido exitosamente los archivos de tu sitio web a tu 
 
 Si encuentras algún problema durante la transferencia, asegúrate de revisar los registros de FileZilla y verificar la configuración del servidor FTPS en Debian.  
 
-**Comprobacion FTP**
+**Comprobacion FTP y acceso a la segunda WEB**
 
    ![Imagen FTP](img/FTP.png)
+   ![Imagen 2web](img/kojima.png)
 
 ## 6. Cuestiones finales
 
