@@ -426,3 +426,15 @@ Despues reinicia nginx:
 ```bash
    sudo systemctl restart nginx
 ```
+
+### 2.2 Probando la nueva configuración
+
+**Comprueba desde tu máquina física/anfitrión que puedes acceder a http://nginx_sitio.local y que se te solicita autenticación**
+
+   ![Imagen 2web](img/contraseña.png)
+
+**Comprueba que si decides cancelar la autenticación, se te negará el acceso al sitio con un error. ¿Qué error es?**
+
+`401 Authorization Required`
+`nginx/1.22.1`
+

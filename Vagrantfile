@@ -50,21 +50,7 @@ EOF'
 
       sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
 
-      sudo bash -c 'cat > /etc/vsftpd.conf <<EOF
-
-rsa_cert_file=/etc/ssl/certs/vsftpd.crt
-rsa_private_key_file=/etc/ssl/private/vsftpd.key
-ssl_enable=YES
-allow_anon_ssl=NO
-force_local_data_ssl=YES
-force_local_logins_ssl=YES
-ssl_tlsv1=YES
-ssl_sslv2=NO
-ssl_sslv3=NO
-require_ssl_reuse=NO
-ssl_ciphers=HIGH
-local_root=/home/vagrant/ftp
-EOF'
+      sudo cp /vagrant/vsftpd.conf /archivos_nginx/vsftpd.conf
 
       sudo systemctl restart vsftpd
 
@@ -74,7 +60,33 @@ EOF'
       sudo ufw allow 21/tcp
       sudo ufw allow 990/tcp
       sudo ufw enable
+sudo bash -c 'cat > /etc/nginx/sites-available/nginx_sitio <<EOF
+    server {
+    listen 80;
+    server_name nginx_sitio.local;
 
+    root /var/www/nginx_sitio/html;
+    index index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+    EOF'
+
+    sudo ln -s /etc/nginx/sites-available/nginx_sitio /etc/nginx/sites-enabled/
+    
+    sudo rm /etc/nginx/sites-enabled/default
+    
+    sudo systemctl restart nginx
+
+    sudo mkdir -p /var/www/nginx_sitio/html
+    sudo chown -R www-data:www-data /var/www/nginx_sitio/html
+    sudo chmod -R 755 /var/www/nginx_sitio
+    sudo chmod -R 775 /var/www/nginx_sitio
+    sudo nano /etc/nginx/sites-available/nginx_sitio
+    sudo systemctl restart nginx
+    sudo ln -s /etc/nginx/sites-available/nginx_sitio /etc/nginx/sites-enabled/
     SHELL
   end
 end
