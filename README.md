@@ -309,7 +309,7 @@ Si encuentras algún problema durante la transferencia, asegúrate de revisar lo
 
 **Comprobacion FTP**
 
-   ![Imagen FTP](img/FTP.PNG)
+   ![Imagen FTP](img/FTP.png)
 
 ## 6. Cuestiones finales
 
