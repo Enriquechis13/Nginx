@@ -307,6 +307,10 @@ Con estos pasos, has transferido exitosamente los archivos de tu sitio web a tu 
 
 Si encuentras algún problema durante la transferencia, asegúrate de revisar los registros de FileZilla y verificar la configuración del servidor FTPS en Debian.  
 
+**Comprobacion FTP**
+
+   ![Imagen FTP](img/FTP.PNG)
+
 ## 6. Cuestiones finales
 
 ### ¿Qué pasa si no hago el link simbólico entre `sites-available` y `sites-enabled` de mi sitio web?
