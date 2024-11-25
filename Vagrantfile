@@ -40,7 +40,7 @@ server {
 }
 EOF'
 
-      sudo ln -s /etc/nginx/sites-available/servidor_nginx /etc/nginx/sites-enabled/
+      sudo ln -s /etc/nginx/sites-available/servidor_nginx/etc/nginx/sites-enabled/
 
       sudo systemctl restart nginx
 
