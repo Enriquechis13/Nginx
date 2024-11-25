@@ -431,10 +431,24 @@ Despues reinicia nginx:
 
 **Comprueba desde tu máquina física/anfitrión que puedes acceder a http://nginx_sitio.local y que se te solicita autenticación**
 
-   ![Imagen 2web](img/contraseña.png)
+   ![Imagen contraseña](img/contraseña.png)
 
 **Comprueba que si decides cancelar la autenticación, se te negará el acceso al sitio con un error. ¿Qué error es?**
 
 `401 Authorization Required`
 `nginx/1.22.1`
 
+
+## 3. Tareas de comprobacion y configuración.
+
+### 3.1 comprobaciones de .log
+
+**Comprobacion de error.log**
+
+   ![Imagen error](img/erorlog.png)
+
+**Comprobacion de access.log**
+
+   ![Imagen assccess](img/accesslog.png)
+
+La entrada del log que proporcionaste indica una solicitud exitosa (`304 Not Modified`), probablemente con caché, y no muestra un error de autenticación. El intentos de acceso con credenciales inválidas, busca códigos de estado `401` en los logs de Nginx.
