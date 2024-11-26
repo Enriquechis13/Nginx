@@ -38,6 +38,7 @@ server {
         try_files $uri $uri/ =404;
     }
 }
+    
 EOF'
 
       sudo ln -s /etc/nginx/sites-available/servidor_nginx/etc/nginx/sites-enabled/
@@ -70,6 +71,16 @@ sudo bash -c 'cat > /etc/nginx/sites-available/nginx_sitio <<EOF
 
     location / {
         try_files $uri $uri/ =404;
+    }
+            location /api {
+        satisfy all;
+        deny 192.168.1.138;
+        allow 192.168.1.0/24;
+        allow 127.0.0.1;            
+        deny all;             
+
+        auth_bas "Administrators Area";
+        auth_basic_user_file /etc/nginx/.htpasswd; 
     }
 }
     EOF'

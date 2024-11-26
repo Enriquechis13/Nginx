@@ -445,7 +445,7 @@ Despues reinicia nginx:
 
 **Comprobacion de error.log**
 
-   ![Imagen error](img/erorlog.png)
+   ![Imagen error](img/errorlog.png)
 
 **Comprobacion de access.log**
 
@@ -453,6 +453,124 @@ Despues reinicia nginx:
 
 La entrada del log que proporcionaste indica una solicitud exitosa (`304 Not Modified`), probablemente con caché, y no muestra un error de autenticación. El intentos de acceso con credenciales inválidas, busca códigos de estado `401` en los logs de Nginx.
 
-error:
-2024/11/25 16:00:00 [error] 12345#12345: *1 access forbidden by rule, client: 192.168.56.1, server: tu_sitio.com, request: "GET / HTTP/1.1", host: "192.168.57.1"
+## 4. Configuración de la Autenticación Básica para contact.html
 
+### 4.1. Eliminar Autenticación Básica del Directorio Raíz
+
+Primero, eliminaremos las líneas que hacen referencia a la autenticación básica en la location del directorio raíz `/`. Estas líneas serán borradas de la configuración de Nginx para que la autenticación básica no se aplique al sitio web en general.
+
+### 4.2. Añadir Autenticación Básica para contact.html
+
+Luego, añadimos un bloque location específico para contact.html, donde aplicamos la autenticación básica solo para este archivo.
+
+```bash
+server {
+    listen 80;
+    server_name nginx_sitio.local;
+
+    root /var/www/nginx_sitio/html;
+    index index.html index.htm;
+
+    location /contact.html {
+        auth_basic "Restricted Area";  
+        auth_basic_user_file /etc/nginx/.htpasswd;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+## 5. Configuración de Restricción de Acceso por IP
+
+En este paso, se implementa una restricción de acceso por IP. Se asegura que solo ciertos rangos de IP y direcciones específicas puedan acceder a las rutas de la aplicación web.
+
+### 5.1. Restricción de Acceso para /api
+
+El siguiente bloque de configuración para /api deniega el acceso a la IP `192.168.1.2`, permite a la subred `192.168.1.1/24` y a la IP local `127.0.0.1`, y finalmente deniega el acceso a todas las demás direcciones IP.
+
+```bash
+location /api {
+
+    deny 192.168.1.2;
+    allow 192.168.1.1/24;
+    allow 127.0.0.1;
+    deny all;
+}
+```
+
+### 5.2. Combinación de Autenticación Básica y Restricción de Acceso por IP
+
+En este escenario, la autenticación básica HTTP se combina con las restricciones de acceso por IP. El acceso a la ruta `/api` se concede únicamente si el usuario está autenticado y proviene de una dirección IP válida.
+
+### 5.2.1. Exigir Autenticación y IP Válida (Ambas Condiciones)
+
+Para garantizar que ambos requisitos sean cumplidos, se debe configurar la directiva satisfy en all, lo que significa que el acceso solo se permite si ambas condiciones (autenticación y IP válida) son satisfechas.
+
+```bash
+location /api {
+    satisfy all;  # Ambas condiciones deben ser satisfechas (IP y usuario válido)
+
+    # Restringir acceso por IP
+    deny 192.168.1.2;               # Denegar acceso a esta IP
+    allow 192.168.1.1/24;           # Permitir acceso desde esta subred
+    allow 127.0.0.1;                # Permitir acceso local
+    deny all;                       # Denegar todo lo demás
+
+    # Autenticación básica
+    auth_basic "Administrator's Area";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}
+```
+
+### 5.2.2. Permitir Acceso con Autenticación O IP Válida (Una de las Dos Condiciones)
+
+Si se desea permitir el acceso si el usuario cumple al menos una de las condiciones (autenticación válida o IP válida), se debe usar satisfy any.
+
+```bash
+location /api {
+    satisfy any;  # Se permite el acceso si se cumple alguna de las condiciones (IP o autenticación)
+
+    # Restringir acceso por IP
+    deny 192.168.1.2;               # Denegar acceso a esta IP
+    allow 192.168.1.1/24;           # Permitir acceso desde esta subred
+    allow 127.0.0.1;                # Permitir acceso local
+    deny all;                       # Denegar todo lo demás
+
+    # Autenticación básica
+    auth_basic "Administrator's Area";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}
+```
+
+## 6 Tareas de Configuración en Nginx
+
+### 6.1. Tarea 1: Denegar el Acceso a la IP de la Máquina Anfitriona al Directorio Raíz de una Web
+
+En esta tarea, configuraremos Nginx para denegar el acceso a la IP de la máquina anfitriona al directorio raíz de uno de los sitios web. Para lograr esto, realizaremos las siguientes acciones:
+
+#### 6.1.1. Modificar el Bloque server de la Configuración de Nginx
+
+Localiza el archivo de configuración de tu sitio en `/etc/nginx/sites-available/` o `/etc/nginx/sites-enabled/`.
+
+![Imagen assccess](img/3.1.png)
+
+Dentro del bloque server de este archivo, añade las directivas deny y allow en la location del directorio raíz `/` para denegar el acceso desde la IP de la máquina anfitriona. Supongamos que la IP de la máquina anfitriona es `192.168.1.100`.
+
+**Muestra la página de error en el navegador**
+
+   ![Imagen assccess](img/falloen3.2.png)
+
+**Muestra el mensaje de error de error.log**
+
+```bash
+error:
+2024/11/25 16:00:00 [error] 12345#12345: *1 access forbidden by rule, client: 192.168.56.1, server: nginx_sitio.local, request: "GET / HTTP/1.1", host: "192.168.57.1"
+```
+
+### 6.2. Configuración de Nginx para Requerir IP Válida y Autenticación Simultáneamente
+
+En esta tarea, configuraremos Nginx para que, desde la máquina anfitriona, se requiera tanto una IP válida como un usuario válido para acceder a una ruta específica del sitio web. Esto se logra combinando las restricciones de IP con la autenticación básica HTTP, utilizando la directiva `satisfy all`.
+
+   ![Imagen contraseña](img/contraseña.png)
