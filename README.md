@@ -452,3 +452,7 @@ Despues reinicia nginx:
    ![Imagen assccess](img/accesslog.png)
 
 La entrada del log que proporcionaste indica una solicitud exitosa (`304 Not Modified`), probablemente con caché, y no muestra un error de autenticación. El intentos de acceso con credenciales inválidas, busca códigos de estado `401` en los logs de Nginx.
+
+error:
+2024/11/25 16:00:00 [error] 12345#12345: *1 access forbidden by rule, client: 192.168.56.1, server: tu_sitio.com, request: "GET / HTTP/1.1", host: "192.168.57.1"
+
