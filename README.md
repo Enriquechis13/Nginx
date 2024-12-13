@@ -510,15 +510,13 @@ Para garantizar que ambos requisitos sean cumplidos, se debe configurar la direc
 
 ```bash
 location /api {
-    satisfy all;  # Ambas condiciones deben ser satisfechas (IP y usuario válido)
+    satisfy all;
 
-    # Restringir acceso por IP
-    deny 192.168.1.2;               # Denegar acceso a esta IP
-    allow 192.168.1.1/24;           # Permitir acceso desde esta subred
-    allow 127.0.0.1;                # Permitir acceso local
-    deny all;                       # Denegar todo lo demás
+    deny 192.168.1.2;      
+    allow 192.168.1.1/24;  
+    allow 127.0.0.1;       
+    deny all;  
 
-    # Autenticación básica
     auth_basic "Administrator's Area";
     auth_basic_user_file /etc/nginx/.htpasswd;
 }
@@ -530,15 +528,13 @@ Si se desea permitir el acceso si el usuario cumple al menos una de las condicio
 
 ```bash
 location /api {
-    satisfy any;  # Se permite el acceso si se cumple alguna de las condiciones (IP o autenticación)
+    satisfy any;  
 
-    # Restringir acceso por IP
-    deny 192.168.1.2;               # Denegar acceso a esta IP
-    allow 192.168.1.1/24;           # Permitir acceso desde esta subred
-    allow 127.0.0.1;                # Permitir acceso local
-    deny all;                       # Denegar todo lo demás
+    deny 192.168.1.2;              
+    allow 192.168.1.1/24;         
+    allow 127.0.0.1;           
+    deny all;      
 
-    # Autenticación básica
     auth_basic "Administrator's Area";
     auth_basic_user_file /etc/nginx/.htpasswd;
 }
@@ -548,7 +544,7 @@ location /api {
 
 ### 6.1. Tarea 1: Denegar el Acceso a la IP de la Máquina Anfitriona al Directorio Raíz de una Web
 
-En esta tarea, configuraremos Nginx para denegar el acceso a la IP de la máquina anfitriona al directorio raíz de uno de los sitios web. Para lograr esto, realizaremos las siguientes acciones:
+En esta tarea, configuraremos Nginx para denegar el acceso a    la IP de la máquina anfitriona al directorio raíz de uno de los sitios web. Para lograr esto, realizaremos las siguientes acciones:
 
 #### 6.1.1. Modificar el Bloque server de la Configuración de Nginx
 
@@ -574,3 +570,5 @@ error:
 En esta tarea, configuraremos Nginx para que, desde la máquina anfitriona, se requiera tanto una IP válida como un usuario válido para acceder a una ruta específica del sitio web. Esto se logra combinando las restricciones de IP con la autenticación básica HTTP, utilizando la directiva `satisfy all`.
 
    ![Imagen contraseña](img/contraseña.png)
+
+
